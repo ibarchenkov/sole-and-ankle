@@ -5,6 +5,17 @@ import { COLORS, WEIGHTS } from '../../constants';
 import { formatPrice, pluralize, isNewShoe } from '../../utils';
 import Spacer from '../Spacer';
 
+function renderBadge(type) {
+  switch(type) {
+    case 'on-sale':
+      return <Badge style={{'--background-color': COLORS.primary}}>Sale</Badge>
+    case 'new-release':
+      return <Badge style={{'--background-color': COLORS.secondary}}>Just Released!</Badge>
+    default:
+      return null
+    }
+}
+
 const ShoeCard = ({
   slug,
   name,
@@ -31,12 +42,14 @@ const ShoeCard = ({
       ? 'new-release'
       : 'default'
 
+
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
         </ImageWrapper>
+        {renderBadge(variant)}
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
@@ -50,26 +63,47 @@ const ShoeCard = ({
   );
 };
 
+const Badge = styled.div`
+  position: absolute;
+  right: -4px;
+  top: 12px;
+  border-radius: 2px;
+  padding: 8px 12px;
+  background-color: var(--background-color);
+  color: white;
+  font-weight: 700;
+  font-size: .875rem;
+`
+
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
+  flex: 1 1 350px;
 `;
 
-const Wrapper = styled.article``;
-
-const ImageWrapper = styled.div`
+const Wrapper = styled.article`
   position: relative;
 `;
 
-const Image = styled.img``;
+const ImageWrapper = styled.div`
+  position: relative;
+  border-radius: 16px 16px 4px 4px;
+  overflow: hidden;
+`;
+
+const Image = styled.img`
+  inline-size: 100%;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
 `;
 
 const Name = styled.h3`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.gray[900]};
+  margin-inline-end: auto;
 `;
 
 const Price = styled.span``;
